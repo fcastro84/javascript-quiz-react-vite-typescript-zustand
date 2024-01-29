@@ -8,9 +8,11 @@ const APP_API_URL = 'https://api.jsonbin.io/v3/b/65b6909e1f5677401f276e83'
 export const useQuestionStore = create<QuestionStore>()(persist(( set, get ) => {
     return {
        question: [],
+       loading: false,
        currentQuestion: 0,
        limit: 0,
        fetchQuestion: async(limit) => {
+       
         const resp = await fetch(APP_API_URL, {
             method: 'GET',
             headers: {
@@ -20,7 +22,7 @@ export const useQuestionStore = create<QuestionStore>()(persist(( set, get ) => 
         const { record: questions } = await resp.json() as {record: QuestionType[]}
         const newQuestions = questions.sort(() => Math.random() -0.5 ).slice( 0, limit)
     
-        set({question: newQuestions, limit}, false)
+        set({question: newQuestions, limit, loading: false}, false)
        },
        userSelectAnswer: (id, answerIndex)=> {
           const { question }  = get()
@@ -56,9 +58,12 @@ export const useQuestionStore = create<QuestionStore>()(persist(( set, get ) => 
         if(prevQuestion >= 0){
          set({currentQuestion: prevQuestion})
         }
-    },
+       },
+       setLoading: () =>{
+        set({loading: true}, false)
+       },
        reset: () => {
-        set({question: [], currentQuestion: 0, limit: 0}, false)
+        set({question: [], currentQuestion: 0, limit: 0, loading: false}, false)
        }
 
     }

@@ -7,11 +7,13 @@ import { useQuestionStore } from "../store/questions"
 const Start = () => {
 
     const fetchQuestion = useQuestionStore( state => state.fetchQuestion)
+    const setLoading = useQuestionStore( state => state.setLoading)
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData( event.currentTarget )
         const limit = Number(formData.get('radio-buttons-group')?.toString()) 
+        setLoading()
         fetchQuestion(limit)
     }
   return (

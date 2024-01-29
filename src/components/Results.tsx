@@ -28,7 +28,9 @@ const calculateRating = ( value: number) => {
 }
 
 const ConffetiResult = (value: number) => {
-    if( value >= 60 ) confetti()
+    if( value >= 60 ) confetti({
+        particleCount: 150
+      })
 }
 
 
